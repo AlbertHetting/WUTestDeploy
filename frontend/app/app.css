@@ -1,0 +1,393 @@
+/* CSS Variables */
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f9f9f9;
+  --bg-hover: #f0f0f0;
+  --bg-button-primary: #4b5563;
+  --bg-button-primary-hover: #374151;
+  --bg-button-disabled: #d1d5db;
+
+  --text-primary: #0d0d0d;
+  --text-muted: #9ca3af;
+  --text-button: #ffffff;
+
+  --border-light: #e5e5e5;
+  --border-medium: #d1d5db;
+  --border-focus: #6b7280;
+
+  --shadow-focus: rgba(107, 114, 128, 0.1);
+}
+
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
+    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+  color: var(--text-primary);
+  background: var(--bg-primary);
+}
+
+/* App layout */
+.app-layout {
+  min-height: 100vh;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1.5rem;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.app-header strong {
+  flex-grow: 1;
+}
+
+.app-header span {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+.app-header button {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--border-medium);
+  border-radius: 6px;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.875rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.1s ease;
+}
+
+.app-header button:hover {
+  background: var(--bg-hover);
+}
+
+.main-content {
+  padding: 1.5rem;
+}
+
+/* Error message */
+.error-message {
+  background: #fee;
+  color: #c00;
+  padding: 0.75rem 1rem;
+  margin: 1rem;
+  border-radius: 8px;
+  border: 1px solid #fcc;
+  font-size: 0.875rem;
+}
+
+/* Authentication Pages */
+.auth-container {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+  padding: 2rem;
+  background: rgba(22, 22, 22, 0.9);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 32px;
+}
+
+.auth-card h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 0.25rem;
+}
+
+.auth-subtitle {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.form-group label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: white;
+}
+
+.form-group input {
+  border: 0px solid var(--border-medium);
+  border-radius: 12px;
+  padding: 0.65rem 0.75rem;
+  font-size: 0.9rem;
+  font-family: inherit;
+  background: rgba(0, 0, 0, 0.3);
+  color: var(--text-muted);
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.form-group input:focus {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 2px var(--shadow-focus);
+}
+
+.auth-form button {
+  margin-top: 1rem;
+  background: white;
+  color: black;
+  border: none;
+  border-radius: 12px;
+  padding: 0.75rem;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.auth-form button:hover:not(:disabled) {
+  background: rgba(74, 137, 255, 1);
+}
+
+.auth-form button:hover:not(:disabled) {
+  background: rgba(74, 137, 255, 1);
+  color: white;
+}
+
+.auth-form button:disabled {
+  background: var(--bg-button-disabled);
+  cursor: not-allowed;
+}
+
+/* Overskriver den generelle .error-message kun inde i auth-kortet */
+.auth-card .error-message {
+  margin: 0 0 1rem;
+}
+
+.success-message {
+  background: #f0fdf4;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+}
+
+.auth-footer {
+  margin-top: 1.25rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.auth-footer a {
+  color: rgba(74, 137, 255, 1);
+  font-weight: 500;
+}
+
+@media (max-width: 480px) {
+  .auth-card {
+    padding: 1.5rem;
+  }
+}
+
+.BackgroundLogin {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+}
+
+.BackgroundLogin img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Forside */
+@font-face {
+  font-family: "8-bit Arcade In";
+  src: url("/fonts/8-bit Arcade In.ttf") format("truetype");
+}
+
+.home {
+  position: fixed;
+  inset: 0;
+  background: black;
+  font-family: "8-bit Arcade In", monospace;
+}
+
+/* Rækken med spil. Den sorte baggrund kan ses i mellemrummet mellem panelerne */
+.game-row {
+  display: flex;
+  gap: 6px;
+  height: 100%;
+}
+
+.game-panel {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  transition: flex 0.4s ease;
+}
+
+/* Panelet man holder musen over bliver bredere, og de andre bliver automatisk smallere */
+.game-panel:hover,
+.game-panel:focus-visible {
+  flex: 1.4;
+}
+
+/* Billedet er altid lige så bredt som et udvidet panel og står i midten.
+   Så når panelet bliver bredere, ser man bare mere af billedet i stedet for at zoome */
+.game-panel img {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100vw * 1.4 / 3.4);
+  height: 100%;
+  object-fit: cover;
+  image-rendering: pixelated;
+}
+
+/* Titel og "Play game" nederst i panelet */
+.game-panel-info {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 2rem 1.5rem;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  color: #fabc2a;
+  text-align: center;
+  /* Kanten tegnes bag bogstaverne, så kun den ydre halvdel af kanten kan ses */
+  -webkit-text-stroke-color: #260023;
+  paint-order: stroke fill;
+  opacity: 0;
+  transform: translateY(1rem);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.game-panel:hover .game-panel-info,
+.game-panel:focus-visible .game-panel-info {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 120px på en 1080p-skærm og mindre på mindre skærme */
+.game-panel-info h2 {
+  font-size: clamp(2.5rem, 11vh, 120px);
+  font-weight: normal;
+  line-height: 1;
+  margin-bottom: 12px;
+  /* Fjerner fontens tomme plads over og under bogstaverne */
+  text-box: trim-both cap alphabetic;
+  -webkit-text-stroke-width: 8px;
+}
+
+/* 48px på en 1080p-skærm */
+.game-panel-info span {
+  display: block;
+  line-height: 1;
+  text-box: trim-both cap alphabetic;
+  font-size: clamp(1.25rem, 4.4vh, 48px);
+  -webkit-text-stroke-width: 4px;
+}
+
+/* Menuen ligger ovenpå panelerne */
+.navbar {
+  position: absolute;
+  inset: 0 0 auto 0;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+}
+
+.navbar-logo {
+  height: clamp(2rem, 6vh, 4rem);
+}
+
+.navbar-links {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+
+.navbar-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  text-decoration: none;
+}
+
+.navbar-link img {
+  height: clamp(3.5rem, 8vh, 5.5rem);
+  transition: transform 0.2s ease;
+}
+
+/* Teksten under ikonet. Samme stil som spil-titlerne og skjult indtil man holder musen over */
+.navbar-link span {
+  font-size: clamp(1rem, 2.5vh, 28px);
+  color: #fabc2a;
+  -webkit-text-stroke: 4px #260023;
+  paint-order: stroke fill;
+  opacity: 0;
+  transform: translateY(-0.5rem);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+/* Når man holder musen over, bliver ikonet større og teksten kommer frem */
+.navbar-link:hover img,
+.navbar-link:focus-visible img {
+  transform: scale(1.2);
+}
+
+.navbar-link:hover span,
+.navbar-link:focus-visible span {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Små skærme: panelerne står under hinanden, og titlen vises altid */
+@media (max-width: 768px) {
+  .game-row {
+    flex-direction: column;
+  }
+
+  .game-panel img {
+    width: 100%;
+  }
+
+  .game-panel-info {
+    opacity: 1;
+    transform: none;
+  }
+}

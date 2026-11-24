@@ -1,0 +1,178 @@
+/**
+ * Login Route
+ *
+ * This route allows existing users to log in with their email and password.
+ *
+ * Authentication Flow:
+ * 1. User enters email and password in the form
+ * 2. Form submits to clientAction
+ * 3. clientAction calls Supabase Auth API (supabase.auth.signInWithPassword)
+ * 4. Supabase verifies the password against the stored hash
+ * 5. If correct, Supabase generates a JWT (JSON Web Token)
+ * 6. Supabase stores the JWT in localStorage automatically
+ * 7. User is redirected to home page
+ * 8. If incorrect, an error message is displayed
+ *
+ * What Happens Behind the Scenes:
+ * - Supabase retrieves the password hash from the database
+ * - Compares the entered password with the stored hash using bcrypt
+ * - If they match, creates a signed JWT containing user info
+ * - JWT is stored in localStorage under key "sb-<project-ref>-auth-token"
+ *
+ * JWT (JSON Web Token):
+ * - A secure way to transmit user information
+ * - Contains: user ID, email, expiration time, and more
+ * - Signed with a secret key so it can't be tampered with
+ * - You can decode JWTs at https://jwt.io to see what's inside
+ * - Try it: After logging in, copy your token from localStorage and paste it at jwt.io!
+ */
+
+import {
+  Form,
+  Link,
+  redirect,
+  useActionData,
+  useNavigation,
+  useSearchParams,
+} from "react-router";
+import { continueAsGuest } from "../lib/auth";
+import { supabase } from "../lib/supabase";
+
+/**
+ * Client Action - Handles login form submission
+ */
+export async function clientAction({ request }) {
+  const formData = await request.formData();
+  const intent = formData.get("intent")
+
+  // Gæste login
+  if (intent === "guest") {
+    try {
+      await continueAsGuest();
+    } catch (error) {
+      console.error("Guest login error", error);
+      return { error: "Could not start a guest session."}
+    }
+    return redirect("/")
+  }
+
+  const email = formData.get("email");
+  const password = formData.get("password");
+
+  // Validate inputs
+  if (!email || !password) {
+    return { error: "Email and password are required" };
+  }
+
+  // Call Supabase Auth API to sign in
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+
+  if (error) {
+    console.error("Login error:", error);
+    // Return a user-friendly error message
+    return { error: "Invalid email or password" };
+  }
+
+  // Success! Supabase has stored the JWT token in localStorage
+  // The token will be automatically included in future requests
+  console.log("Login successful! User:", data.user.email);
+  console.log("JWT token has been stored in localStorage");
+
+  // Check if there's a redirect parameter (where user was before being logged out)
+  const url = new URL(request.url);
+  const redirectTo = url.searchParams.get("redirect") || "/";
+
+  // Redirect back to where they came from, or home page
+  return redirect(redirectTo);
+}
+
+/**
+ * Login Component
+ */
+export default function Login() {
+  const actionData = useActionData();
+  const navigation = useNavigation();
+  const isSubmitting = navigation.state === "submitting";
+
+  // Check URL parameters
+  const [searchParams] = useSearchParams();
+  const justRegistered = searchParams.get("registered") === "true";
+  const wasRedirected = searchParams.has("redirect");
+
+  return (
+    <div className="auth-container">
+      <div className="BackgroundLogin">
+        <img src="../public/images/LoginBackground.png" alt="" />
+      </div>
+      <div className="auth-card">
+        <h1>Welcome Back!</h1>
+        <p className="auth-subtitle">
+          Log in or create an account to store progress and compete on the
+          leaderboards!
+        </p>
+
+        {justRegistered && (
+          <div className="success-message">
+            Account created successfully! Please log in.
+          </div>
+        )}
+
+        {wasRedirected && (
+          <div className="info-message">
+            Your session has expired. Please log in again.
+          </div>
+        )}
+
+        <Form method="post" className="auth-form">
+          <div className="form-group">
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              autoComplete="email"
+              placeholder="Your email"
+            />
+          </div>
+
+          <div className="form-group">
+            <input
+              type="password"
+              id="password"
+              name="password"
+              required
+              autoComplete="current-password"
+              placeholder="Your Password"
+            />
+          </div>
+
+          {actionData?.error && (
+            <div className="error-message">{actionData.error}</div>
+          )}
+
+          <button type="submit" disabled={isSubmitting} className="btn-primary">
+            {isSubmitting ? "Logging in..." : "Log In"}
+          </button>
+        </Form>
+        <Form method="post">
+          <button
+          type="submit"
+          name="intent"
+          value="guest"
+          disabled={isSubmitting}
+          className="btn-secondary">
+            Continue as guest
+          </button>
+          <p>You can play all the games as guest, however your points will not be saved on the leaderboards</p>
+        </Form>
+
+        <p className="auth-footer">
+          Don't have an account? <Link to="/register">Sign up</Link>
+        </p>
+      </div>
+    </div>
+  );
+}
